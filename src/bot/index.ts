@@ -7,10 +7,10 @@ import { translate } from "../api"
 
 
 const BOT_API_KEY = process.env.BOT_API_KEY ?? ''
-const BOT_ATTEMP_COUNT = 3
+// const BOT_ATTEMP_COUNT = 3
 
 
-const bot = new Telegraf(BOT_API_KEY)
+export const bot = new Telegraf(BOT_API_KEY)
 
 bot.start((ctx) => {
    ctx.reply(getWelcomeMessage(ctx.botInfo.first_name))   
@@ -55,7 +55,7 @@ bot.on('inline_query', async (ctx) => {
 })
 
 // Launch the bot
-async function launchBot(retryCount: number, cb: () => void) {
+export async function launchBot(retryCount: number, cb: () => void) {
     try {
         await bot.launch(cb)
     } catch (err) {
@@ -65,12 +65,5 @@ async function launchBot(retryCount: number, cb: () => void) {
             launchBot(retryCount - 1, cb)
         }
     }
+    return bot
 }
-
-launchBot(BOT_ATTEMP_COUNT, () => {
-    console.log("[+] Bot started successfully")
-})
-
-// Safe stop
-process.on('SIGINT', () => bot.stop('SIGINT'))
-process.on('SIGTERM', () => bot.stop('SIGTERM'))

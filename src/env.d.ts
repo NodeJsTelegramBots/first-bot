@@ -5,6 +5,7 @@ declare module "process" {
         readonly BOT_API_KEY: string;
         readonly RAPIDAPI_KEY: string;
         readonly RAPIDAPI_GT_BASE_URL: string;
+        readonly BOT_WEBHOOK_URL: string;
       }
     }
   }
